@@ -1,0 +1,21 @@
+{
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.vercel/**": true,
+    "**/dist/**": true,
+    "**/build/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "editor.inlayHints.enabled": "off",
+  "typescript.inlayHints.parameterNames.enabled": "none"
+}

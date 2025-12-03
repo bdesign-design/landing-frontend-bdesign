@@ -1,0 +1,16 @@
+# robots.txt para B.Design
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://bdesign.agency/sitemap.xml
+
+# Crawl-delay para proteger el servidor
+Crawl-delay: 1
+
+# Permitir crawling de assets
+Allow: /public/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.svg$
