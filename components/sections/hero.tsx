@@ -70,7 +70,7 @@ export function Hero() {
             Elegancia esencial
             <br className="md:hidden" />
             <span className="hidden md:inline"> </span>
-            <span className="whitespace-nowrap">Diseño que trasciende</span>
+            <span className="md:whitespace-nowrap">Diseño que trasciende</span>
           </h1>
 
           {/* Botón - lado izquierdo */}
