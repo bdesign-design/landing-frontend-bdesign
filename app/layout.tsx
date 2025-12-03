@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { libreBaskerville, storyScript } from "./fonts";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const inter = Inter({
@@ -88,6 +89,7 @@ export default function RootLayout({
         className={`${inter.variable} ${libreBaskerville.variable} ${storyScript.variable} antialiased flex flex-col min-h-dvh md:min-h-screen`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
