@@ -194,6 +194,7 @@ export function Contact() {
                       {errors.email && (
                         <p className="text-xs text-red-500">{errors.email}</p>
                       )}
+                    </div>
                     <div className="space-y-2">
                       <Label htmlFor="telefono" className="text-sm text-foreground">
                         Teléfono
@@ -208,8 +209,6 @@ export function Contact() {
                       />
                       {errors.telefono && (
                         <p className="text-xs text-red-500">{errors.telefono}</p>
-                      )}
-                    </div> className="text-xs text-red-500">{errors.telefono}</p>
                       )}
                     </div>
                   </div>
