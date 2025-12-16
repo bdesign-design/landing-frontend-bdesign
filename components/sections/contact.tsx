@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 // Esquema de validación con Zod
 const contactSchema = z.object({
@@ -25,6 +26,7 @@ export function Contact() {
   });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,29 +62,23 @@ export function Contact() {
         throw new Error('Error al guardar el contacto');
       }
 
-      // Crear mensaje para WhatsApp
-      let mensaje = `Hola bdesign! 👋\n\n*Nuevo contacto:*\n\nNombre: ${formData.nombre}`;
-      if (formData.email) mensaje += `\nEmail: ${formData.email}`;
-      if (formData.telefono) mensaje += `\nTeléfono: ${formData.telefono}`;
-      mensaje += `\n\n*Proyecto:*\n${formData.descripcion}`;
+      // Mostrar mensaje de éxito
+      setIsSuccess(true);
+      
+      // Limpiar formulario
+      setFormData({ nombre: "", email: "", telefono: "", descripcion: "" });
+      setIsSubmitting(false);
 
-      const whatsappUrl = `https://wa.me/51972589821?text=${encodeURIComponent(mensaje)}`;
-
-      // Abrir WhatsApp
-      window.open(whatsappUrl, '_blank');
+      // Ocultar mensaje de éxito después de 5 segundos
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
       
     } catch (error) {
       console.error('Error:', error);
       setErrors({ nombre: 'Hubo un error. Por favor intenta nuevamente.' });
       setIsSubmitting(false);
-      return;
     }
-    
-    // Limpiar formulario
-    setTimeout(() => {
-      setFormData({ nombre: "", email: "", telefono: "", descripcion: "" });
-      setIsSubmitting(false);
-    }, 1000);
   };
 
   return (
@@ -145,6 +141,23 @@ export function Contact() {
 
               {/* Columna derecha - Formulario */}
               <div className="p-8 md:p-12 bg-background">
+                {/* Mensaje de éxito */}
+                {isSuccess && (
+                  <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <p className="font-medium text-green-800 dark:text-green-200">¡Mensaje enviado correctamente!</p>
+                        <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+                          Gracias por contactarnos. Nos pondremos en contacto contigo a la brevedad.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Nombre */}
                   <div className="space-y-2">
@@ -181,22 +194,22 @@ export function Contact() {
                       {errors.email && (
                         <p className="text-xs text-red-500">{errors.email}</p>
                       )}
-                    </div>
-
                     <div className="space-y-2">
                       <Label htmlFor="telefono" className="text-sm text-foreground">
                         Teléfono
                       </Label>
-                      <Input
+                      <PhoneInput
                         id="telefono"
-                        type="tel"
                         placeholder="999 999 999"
                         value={formData.telefono}
-                        onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                        className={`h-11 ${errors.telefono ? 'border-red-500' : ''}`}
+                        onChange={(value) => setFormData({ ...formData, telefono: value || "" })}
+                        defaultCountry="PE"
+                        className={errors.telefono ? 'border-red-500' : ''}
                       />
                       {errors.telefono && (
                         <p className="text-xs text-red-500">{errors.telefono}</p>
+                      )}
+                    </div> className="text-xs text-red-500">{errors.telefono}</p>
                       )}
                     </div>
                   </div>
