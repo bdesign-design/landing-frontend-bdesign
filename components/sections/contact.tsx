@@ -26,7 +26,7 @@ export function Contact() {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrors({});
@@ -46,16 +46,37 @@ export function Contact() {
       return;
     }
 
-    // Crear mensaje para WhatsApp
-    let mensaje = `Hola bdesign! 👋\n\n*Nuevo contacto:*\n\nNombre: ${formData.nombre}`;
-    if (formData.email) mensaje += `\nEmail: ${formData.email}`;
-    if (formData.telefono) mensaje += `\nTeléfono: ${formData.telefono}`;
-    mensaje += `\n\n*Proyecto:*\n${formData.descripcion}`;
+    try {
+      // Guardar en la base de datos
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const whatsappUrl = `https://wa.me/51999999999?text=${encodeURIComponent(mensaje)}`;
+      if (!response.ok) {
+        throw new Error('Error al guardar el contacto');
+      }
 
-    // Abrir WhatsApp
-    window.open(whatsappUrl, '_blank');
+      // Crear mensaje para WhatsApp
+      let mensaje = `Hola bdesign! 👋\n\n*Nuevo contacto:*\n\nNombre: ${formData.nombre}`;
+      if (formData.email) mensaje += `\nEmail: ${formData.email}`;
+      if (formData.telefono) mensaje += `\nTeléfono: ${formData.telefono}`;
+      mensaje += `\n\n*Proyecto:*\n${formData.descripcion}`;
+
+      const whatsappUrl = `https://wa.me/51972589821?text=${encodeURIComponent(mensaje)}`;
+
+      // Abrir WhatsApp
+      window.open(whatsappUrl, '_blank');
+      
+    } catch (error) {
+      console.error('Error:', error);
+      setErrors({ nombre: 'Hubo un error. Por favor intenta nuevamente.' });
+      setIsSubmitting(false);
+      return;
+    }
     
     // Limpiar formulario
     setTimeout(() => {

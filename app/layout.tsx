@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { libreBaskerville, storyScript } from "./fonts";
 import { Analytics } from "@vercel/analytics/next";
+import { getOrganizationSchema } from "./schema";
 import "./globals.css";
 
 const inter = Inter({
@@ -51,13 +52,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_PE",
-    url: "https://bdesign.agency",
+    url: "https://www.bdesign.agency",
     siteName: "B.Design",
     title: "B.Design - Muebles de Melamine & Diseño de Interiores | Lima, Perú",
     description: "Especialistas en muebles de melamine a medida y diseño de interiores en Lima. +50 proyectos culminados. Cocinas, closets, escritorios y más.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://www.bdesign.agency/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "B.Design - Diseño de interiores y muebles de melamine en Lima",
@@ -68,10 +69,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "B.Design - Muebles de Melamine & Diseño de Interiores | Lima",
     description: "Especialistas en muebles de melamine a medida y diseño de interiores en Lima. +5 años de experiencia.",
-    images: ["/og-image.jpg"],
+    images: ["https://www.bdesign.agency/og-image.jpg"],
   },
   alternates: {
-    canonical: "https://bdesign.agency",
+    canonical: "https://www.bdesign.agency",
   },
   verification: {
     google: "pendiente",
@@ -83,8 +84,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = getOrganizationSchema();
+  
   return (
     <html lang="es">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${libreBaskerville.variable} ${storyScript.variable} antialiased flex flex-col min-h-dvh md:min-h-screen`}
       >
