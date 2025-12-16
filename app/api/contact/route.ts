@@ -30,6 +30,14 @@ async function initDB() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Verificar que exista la variable de entorno
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json(
+        { error: 'Base de datos no configurada' },
+        { status: 500 }
+      );
+    }
+
     // Inicializar DB
     await initDB();
 
@@ -76,6 +84,14 @@ export async function POST(request: NextRequest) {
 // Opcional: Endpoint GET para listar contactos
 export async function GET() {
   try {
+    // Verificar que exista la variable de entorno
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json(
+        { error: 'Base de datos no configurada' },
+        { status: 500 }
+      );
+    }
+
     await initDB();
     
     const contactos = await sql`
